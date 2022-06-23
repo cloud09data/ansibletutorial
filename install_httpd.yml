@@ -1,0 +1,32 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Repository index
+    dnf:
+      update_cache: yes
+
+  - name: install apache httpd packages
+    dnf:
+      name: httpd
+      state: present
+
+  - name: add php support for apache
+    dnf:
+      name: php-gd,php-ldap,php-odbc,php-pear,php-snmp,php-soap,curl-devel
+      state: present
+  
+  - name: Enable service httpd, and not touch the state
+    ansible.builtin.service:
+      name: httpd
+      state: started
+      enabled: yes
+
+
+  - name: Enable service php, and not touch the state
+    ansible.builtin.service:
+      name: php
+      state: started
+      enabled: yes
